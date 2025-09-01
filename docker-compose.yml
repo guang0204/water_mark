@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  watermark-api:
+    container_name: watermark-api  # 容器名称不能包含版本号，修正为纯名称
+    image: watermark-api:1.0       # 明确指定使用的镜像版本
+    ports:
+      - "5006:5006"
+    volumes:
+      - ./outputs:/app/outputs
+      - ./uploads:/app/uploads
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+      - WATERMARK_API_KEY=${WATERMARK_API_KEY:-goodluck.yunchuang}
+      - PORT=${PORT:-5006}
+      - WATERMARK_IMAGE_PATH=${WATERMARK_IMAGE_PATH:-logo.png}
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
